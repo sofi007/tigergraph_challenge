@@ -4,7 +4,9 @@ from dash import html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, ClientsideFunction, State
 from dash import dash_table
-
+import pyTigerGraph as tg
+import requests
+import json
 import numpy as np
 import pandas as pd
 import datetime
@@ -19,6 +21,12 @@ app.title = 'Drug & Disease Mining & Prediction'
 
 server = app.server
 app.config.suppress_callback_exceptions = True
+# Please change the following parameters according to your creadentials.
+conn = tg.TigerGraphConnection(host="http://127.0.0.1",
+                               graphname="graph_drug_disease",
+                               username="tigergraph",
+                               password="tigergraph",
+                               apiToken="2aa016d747ede9gg6da3drslm98srfoj")
 
 # Path
 #BASE_PATH = pathlib.Path(__file__).parent.resolve()
@@ -49,11 +57,49 @@ app.layout = html.Div(
                     label='Prescriber',
                     #value='what-is',
                     children=html.Div(className='control-tab-pres', children=[
-                        html.H4(className='prescriber', children='prescriber'),
-                        html.Div(dcc.Input(id='input-box-prescriber', type='text')),
-                        html.Button('Submit', id='button-prescriber'),
+                        # html.H4(className='prescriber', children='prescriber'),
                         html.Div(id='output-container-button-prescriber',
                                  children='Enter a prescriber and press submit'),
+                        html.Div(dcc.Input(id='input-box-prescriber', type='text')),
+                        html.Button('Submit', id='button-prescriber'),
+                        html.Div(
+                            id="right-column_prescriber",
+                            #className="eight columns",
+                            children=[
+                                html.Div([
+                                    html.Div([
+                                        html.H3(children='Number of drugs'),
+                                        html.Div(html.H3(id="nb_drugs_for_a_prescriber")),
+                                        # dcc.Graph(                        id='graph1',                        figure=fig                    ),
+                                    ], className='five columns'),
+
+
+                                ],
+                                    className='row'),
+                                ###########
+                                html.Div([
+                                    html.Div([
+                                        html.B("Drugs"),
+                                        html.Hr(),
+                                        dash_table.DataTable(id="tableStat_drugs_for_prescriber",
+                                                             page_current=0,
+                                                             page_size=10,
+                                                             style_cell={'textAlign': 'left'},
+                                                             export_columns='visible',
+                                                             export_format='csv',
+                                                             filter_action='native'
+                                                             #page_action='custom',
+                                                             #sort_action='custom',
+                                                             #sort_mode='multi',
+                                                             #sort_by=[],
+                                                             ),
+                                    ], className='five columns'),
+
+                                ],
+                                    className='row'),
+
+                            ],
+                        ),
 
 
                     ])
@@ -63,13 +109,11 @@ app.layout = html.Div(
                     #value='what-is',
 
                     children=html.Div(className='control-tab-drug', children=[
+                        html.Div(id='output-container-button-drug',
+                        children='Enter a drug and press submit'),
+                        html.Div(dcc.Input(id='input-box-drug', type='text')),
+                        html.Button('Submit', id='button-drug'),
 
-                        html.Div([
-                                html.Div(id='output-container-button-drug',
-                                     children='Enter a drug and press submit'),
-                                     html.Div(dcc.Input(id='input-box-drug', type='text')),
-                                     html.Button('Submit', id='button-drug'),
-                                ], style={'textAlign': 'center'}),
 
                         #html.H4(className='drug', children='drug'),
 
@@ -177,18 +221,15 @@ app.layout = html.Div(
                                     id="recommendation_for_diseases",
                                     children=[
                                         #html.B("Recommendation for diseases"),
-                                        html.H3('Recommendation for diseases'),
+                                        html.H3('Recommendation of diseases for the drug'),
                                         html.Hr(),
                                         dash_table.DataTable(id="tableStat-rec-disease_for_drug",
                                                              page_current=0,
-                                                             page_size=5,
-                                                             page_action='custom',
-                                                             sort_action='custom',
-                                                             sort_mode='multi',
-                                                             sort_by=[],
+                                                             page_size=10,
                                                              style_cell={'textAlign': 'left'},
                                                              export_columns='visible',
-                                                             export_format='csv'
+                                                             export_format='csv',
+                                                             filter_action='native'
                                                              # filter_action='custom',
                                                              # filter_query=''
                                                              ),
@@ -208,23 +249,187 @@ app.layout = html.Div(
                     label='Disease',
                     #value='what-is',
                     children=html.Div(className='control-tab-pres', children=[
-                        html.H4(className='disease', children='disease'),
+                        # html.H4(className='disease', children='disease'),
+                        html.Div(id='output-container-button-disease',
+                                 children='Enter a disease and press submit'),
                         html.Div(dcc.Input(id='input-box-disease', type='text')),
                         html.Button('Submit', id='button-disease'),
-                        html.Div(id='output-container-button-disease',
-                                 children='Enter a disease and press submit')
+                        html.Div(
+                            id="right-column_disease",
+                            #className="eight columns",
+                            children=[
+                                html.Div([
+                                    html.Div([
+                                        html.H3(children='Number of used drugs'),
+                                        html.Div(html.H3(id="nb_drugs_for_a_disease")),
+                                        # dcc.Graph(                        id='graph1',                        figure=fig                    ),
+                                    ], className='three columns'),
+                                    html.Div([
+                                        html.H3(children='Number of associated genes'),
+                                        html.Div(html.H3(id="nb_genes_for_a_disease")),
+                                        # dcc.Graph(                        id='graph1',                        figure=fig                    ),
+                                    ], className='three columns'),
+                                    html.Div([
+                                        html.H3(children='Number of tested drugs'),
+                                        html.Div(html.H3(id="nb_tested_drugs_for_a_disease")),
+                                        # dcc.Graph(                        id='graph1',                        figure=fig                    ),
+                                    ], className='three columns'),
 
-                    ])
+                                ],
+                                    className='row'),
+                                ###########
+                                html.Div([
+                                    html.Div([
+                                        html.B("Drugs"),
+                                        html.Hr(),
+                                        dash_table.DataTable(id="tableStat_drugs_for_disease",
+                                                             page_current=0,
+                                                             page_size=10,
+                                                             style_cell={'textAlign': 'left'},
+                                                             export_columns='visible',
+                                                             export_format='csv',
+                                                             filter_action='native'
+                                                             #page_action='custom',
+                                                             #sort_action='custom',
+                                                             #sort_mode='multi',
+                                                             #sort_by=[],
+                                                             ),
+                                    ], className='three columns'),
+                                    html.Div([
+                                        html.B("Gene"),
+                                        html.Hr(),
+                                        dash_table.DataTable(id="tableStat_gene_for_disease",
+                                                             page_current=0,
+                                                             page_size=10,
+                                                             style_cell={'textAlign': 'left'},
+                                                             export_columns='visible',
+                                                             export_format='csv',
+                                                             filter_action='native'
+                                                             #page_action='custom',
+                                                             #sort_action='custom',
+                                                             #sort_mode='multi',
+                                                             #sort_by=[],
+                                                             ),
+                                    ], className='three columns'),
+                                    html.Div([
+                                        html.B("Tested drugs for disease"),
+                                        html.Hr(),
+                                        dash_table.DataTable(id="tableStat_tested_drugs_for_disease",
+                                                             page_current=0,
+                                                             page_size=10,
+                                                             style_cell={'textAlign': 'left'},
+                                                             export_columns='visible',
+                                                             export_format='csv',
+                                                             filter_action='native'
+                                                             #page_action='custom',
+                                                             #sort_action='custom',
+                                                             #sort_mode='multi',
+                                                             #sort_by=[],
+                                                             ),
+                                    ], className='three columns'),
+
+                                ],
+                                    className='row'),
+
+                                # Recommendation for diseases
+                                html.Div(
+                                    id="recommendation_for_drugs",
+                                    children=[
+                                        #html.B("Recommendation for diseases"),
+                                        html.H3('Recommendation of drugs for the diseases'),
+                                        html.Hr(),
+                                        dash_table.DataTable(id="tableStat-rec-drug_for_disease",
+                                                             page_current=0,
+                                                             page_size=10,
+                                                             style_cell={'textAlign': 'left'},
+                                                             export_columns='visible',
+                                                             export_format='csv',
+                                                             filter_action='native'
+                                                             # filter_action='custom',
+                                                             # filter_query=''
+                                                             ),
+                                        # dcc.Graph(id="patient_volume_hm"),
+                                    ],
+                                ),
+                                # Recommendation for diseases based on genes
+
+                            ],
+                        ),
+
+
+
+                    ]),
                 ),
                 dcc.Tab(
                     label='Gene',
                     #value='what-is',
                     children=html.Div(className='control-tab-pres', children=[
-                        html.H4(className='gene', children='gene'),
+                        # html.H4(className='gene', children='gene'),
+                        html.Div(id='output-container-button-gene',
+                                 children='Enter a gene and press submit'),
                         html.Div(dcc.Input(id='input-box-gene', type='text')),
                         html.Button('Submit', id='button-gene'),
-                        html.Div(id='output-container-button-gene',
-                                 children='Enter a gene and press submit')
+                        html.Div(
+                            id="right-column_gene",
+                            #className="eight columns",
+                            children=[
+                                html.Div([
+                                    html.Div([
+                                        html.H3(children='Number of drugs'),
+                                        html.Div(html.H3(id="nb_drugs_for_a_gene")),
+                                        # dcc.Graph(                        id='graph1',                        figure=fig                    ),
+                                    ], className='five columns'),
+                                    html.Div([
+                                        html.H3(children='Number of diseases'),
+                                        html.Div(html.H3(id="nb_disease_for_a_gene")),
+                                        # dcc.Graph(                        id='graph1',                        figure=fig                    ),
+                                    ], className='five columns'),
+
+
+                                ],
+                                    className='row'),
+                                ###########
+                                html.Div([
+                                    html.Div([
+                                        html.B("Drugs"),
+                                        html.Hr(),
+                                        dash_table.DataTable(id="tableStat_drugs_for_gene",
+                                                             page_current=0,
+                                                             page_size=10,
+                                                             style_cell={'textAlign': 'left'},
+                                                             export_columns='visible',
+                                                             export_format='csv',
+                                                             filter_action='native'
+                                                             #page_action='custom',
+                                                             #sort_action='custom',
+                                                             #sort_mode='multi',
+                                                             #sort_by=[],
+                                                             ),
+                                    ], className='five columns'),
+                                    html.Div([
+                                        html.B("Gene"),
+                                        html.Hr(),
+                                        dash_table.DataTable(id="tableStat_disease_for_gene",
+                                                             page_current=0,
+                                                             page_size=10,
+                                                             style_cell={'textAlign': 'left'},
+                                                             export_columns='visible',
+                                                             export_format='csv',
+                                                             filter_action='native'
+                                                             #page_action='custom',
+                                                             #sort_action='custom',
+                                                             #sort_mode='multi',
+                                                             #sort_by=[],
+                                                             ),
+                                    ], className='five columns'),
+
+
+                                ],
+                                    className='row'),
+
+                            ],
+                        ),
+
 
                     ])
                 ),
@@ -373,16 +578,16 @@ app.layout = html.Div(
                                 children=[
                                     html.Div([
                                         html.Div([
-                                            html.H3(children='Nb of diseases'),
+                                            html.H3(children='Number of diseases'),
                                             html.Div(html.H3(id="total_nb_diseases")),
                                             # dcc.Graph(                        id='graph1',                        figure=fig                    ),
                                         ], className='three columns'),
                                         html.Div([
-                                            html.H3(children='Nb of diseases used by drugs'),
+                                            html.H3(children='Number of diseases used by drugs'),
                                             html.Div(html.H3(id="total_nb_diseases_related_to_drugs")),
                                         ], className='three columns'),
                                         html.Div([
-                                            html.H3(children='Nb of diseases with genes'),
+                                            html.H3(children='Number of diseases with genes'),
                                             html.Div(html.H3(id="total_nb_diseases_related_to_genes")),
                                             # dcc.Graph(                        id='graph1',                        figure=fig                    ),
                                         ], className='three columns'),
@@ -432,16 +637,16 @@ app.layout = html.Div(
                                 children=[
                                     html.Div([
                                         html.Div([
-                                            html.H3(children='Nb of genes'),
+                                            html.H3(children='Number of genes'),
                                             html.Div(html.H3(id="total_nb_genes")),
                                             # dcc.Graph(                        id='graph1',                        figure=fig                    ),
                                         ], className='three columns'),
                                         html.Div([
-                                            html.H3(children='Nb of genes related to drugs'),
+                                            html.H3(children='Number of genes related to drugs'),
                                             html.Div(html.H3(id="total_nb_genes_related_to_drugs")),
                                         ], className='three columns'),
                                         html.Div([
-                                            html.H3(children='Nb of genes related to diseases'),
+                                            html.H3(children='Number of genes related to diseases'),
                                             html.Div(html.H3(id="total_nb_genes_related_to_diseases")),
                                             # dcc.Graph(                        id='graph1',                        figure=fig                    ),
                                         ], className='three columns'),
@@ -497,9 +702,6 @@ app.layout = html.Div(
 )
 
 
-def getStats_from_queries():
-    nb1 = 1
-    return nb1
 
 def getClustering_results(node, type_node, relation_node):
 
@@ -514,32 +716,44 @@ def getClustering_results(node, type_node, relation_node):
 
 
 
-
-def getResultsFromDF(filename, type_node, node):
-    df = pd.read_csv(filename, names=[type_node, node, "Score"], header=None)
-    columns = [{"name": i, "id": i} for i in df[[type_node, "Score"]].columns]
-
-    data = df.to_dict('records')
-    return columns, data
-
-
-
+#def getResults(mylist, colname):
 def getResults(filename, colname):
+    mylist = []
     with open(filename) as f:
         mylist = f.readlines()
+    for elem in mylist:
+        if ("\n" == elem):
+            mylist.remove("\n")
 
-    if ("\n" in mylist):
-        mylist.remove("\n")
 
 
     data = pd.DataFrame(mylist, columns=[colname])
     columns = [{"name": i, "id": i} for i in data.columns]
     size = len(data)
-    data = data[:50].to_dict('records')
+    if(len(data) > 1000):
+        data = data[:1000].to_dict('records')
+    else:
+        data = data.to_dict('records')
 
     return columns, data, size
+
+def getResultsFromDF(filename, type_node):
+    df = pd.read_csv(filename, names=[type_node, "Score (Common genes)"], header=None)
+    columns = [{"name": i, "id": i} for i in df[[type_node, "Score (Common genes)"]].columns]
+
+    data = df.to_dict('records')
+    return columns, data
+
+def init_columns_data():
+    data = pd.DataFrame()
+    columns = [{"name": i, "id": i} for i in data.columns]
+    data = data.to_dict('records')
+    nb = ""
+    return columns, data, nb
+
 @app.callback(
     [
+
         Output("tableStat1", "columns"),
         Output("tableStat1", "data"),
         Output("nb_prescribers_for_a_drug", "children"),
@@ -555,50 +769,42 @@ def getResults(filename, colname):
         Output("tableStat4", "columns"),
         Output("tableStat4", "data"),
         Output("nb_used_diseases_for_a_drug", "children"),
-
         Output("tableStat-rec-disease_for_drug", "columns"),
         Output("tableStat-rec-disease_for_drug", "data"),
 
 
+
     ],
     [
-        Input('button-drug', 'n_clicks'),
-        Input('button-prescriber', 'n_clicks')
+        Input('button-drug', 'n_clicks')
     ],
     [
-        State('input-box-drug', 'value'),
-        State('input-box-prescriber', 'value')
+        State('input-box-drug', 'value')
 
     ])
-def query_stat_table(n_clicks_drug, n_clicks_prescriber, value_drug, value_prescriber):
-    print(n_clicks_drug)
-    print(value_drug)
-    print(n_clicks_prescriber)
-    print(value_prescriber)
-    # chercher
+def query_stat_table_drugs(n_clicks_drug, value_drug):
+    columns_prescribers, data_prescribers, nb_prescribers_for_drug = init_columns_data()
+    columns_genes, data_genes, nb_genes_for_a_drug = init_columns_data()
+    columns_tested_disease, data_tested_disease, nb_tested_diseases_for_a_drug = init_columns_data()
+    columns_used_diseases, data_used_diseases, nb_used_diseases_for_a_drug = init_columns_data()
+    column_recom_disease_for_drug, data_recom_disease_for_drug, nb= init_columns_data()
+    # search
+    if (n_clicks_drug != None and value_drug != ''):
+
+         columns_prescribers, data_prescribers, nb_prescribers_for_drug = getResults("../server/results/search_results/getPRESCRIBER_for_drug.txt", "Prescribers")
+
+         columns_genes, data_genes, nb_genes_for_a_drug = getResults("../server/results/search_results/getGENES_for_drug.txt","GENES")
+
+         columns_tested_disease, data_tested_disease, nb_tested_diseases_for_a_drug = getResults("../server/results/search_results/get_tested_DISEASES_for_drug.txt","Tested Diseases")
+
+         columns_used_diseases, data_used_diseases, nb_used_diseases_for_a_drug = getResults("../server/results/search_results/getDISEASES_of_drug.txt","Used Diseases")
+
+         file = "../server/results/drugs/TRAZODONE/predictions.txt"
+         #df = pd.read_csv(file, header=None)
+         #print(df[[1,2]])
+         column_recom_disease_for_drug, data_recom_disease_for_drug = getResultsFromDF(file, "Disease")
 
 
-    columns_prescribers, data_prescribers, nb_prescribers_for_drug = getResults("../results/getPRESCRIBER_for_drug.txt", "Prescribers")
-
-    columns_genes, data_genes, nb_genes_for_a_drug = getResults("../results/getGENES_for_drug.txt",
-                                                                                "GENES")
-
-    columns_tested_disease, data_tested_disease, nb_tested_diseases_for_a_drug = getResults("../results/get_tested_DISEASES_for_drug.txt",
-                                                                                "Tested Diseases")
-
-    columns_used_diseases, data_used_diseases, nb_used_diseases_for_a_drug = getResults("../results/getDISEASES_of_drug.txt",
-                                                                                "Used Diseases")
-
-    column_recom_disease_for_drug, data_recom_disease_for_drug = getResultsFromDF("../results/tmp.txt", "Disease", value_drug)
-
-
-    '''with open("../results/getPRESCRIBER_for_drug.txt") as f:
-        prescribers_list = f.readlines()
-    #print(prescribers_list)
-    data_prescribers = pd.DataFrame(prescribers_list, columns=["Prescribers"])
-    columns_prescribers = [{"name": i, "id": i} for i in data_prescribers.columns]
-    nb_prescribers_for_drug = len(data_prescribers)
-    data_prescribers = data_prescribers[:10].to_dict('records')'''
 
 
     return columns_prescribers, data_prescribers, nb_prescribers_for_drug,\
@@ -606,6 +812,148 @@ def query_stat_table(n_clicks_drug, n_clicks_prescriber, value_drug, value_presc
            columns_tested_disease, data_tested_disease, nb_tested_diseases_for_a_drug,\
            columns_used_diseases, data_used_diseases, nb_used_diseases_for_a_drug,\
            column_recom_disease_for_drug, data_recom_disease_for_drug
+
+
+@app.callback(
+    [
+
+        Output("tableStat_drugs_for_disease", "columns"),
+        Output("tableStat_drugs_for_disease", "data"),
+        Output("nb_drugs_for_a_disease", "children"),
+
+        Output("tableStat_gene_for_disease", "columns"),
+        Output("tableStat_gene_for_disease", "data"),
+        Output("nb_genes_for_a_disease", "children"),
+
+        Output("tableStat_tested_drugs_for_disease", "columns"),
+        Output("tableStat_tested_drugs_for_disease", "data"),
+        Output("nb_tested_drugs_for_a_disease", "children"),
+
+        Output("tableStat-rec-drug_for_disease", "columns"),
+        Output("tableStat-rec-drug_for_disease", "data"),
+
+    ],
+    [
+        Input('button-disease', 'n_clicks')
+    ],
+    [
+        State('input-box-disease', 'value')
+
+    ])
+def query_stat_table_disease(n_clicks_disease, value_disease):
+
+    columns_genes, data_genes, nb_genes_for_a_disease = init_columns_data()
+    columns_tested_drugs, data_tested_drugs, nb_tested_drugs_for_a_disease = init_columns_data()
+    columns_used_drugs, data_used_drugs, nb_used_drugs_for_a_disease = init_columns_data()
+    column_recom_drug_for_disease, data_recom_drug_for_disease, nb_recom_drug_for_disease = init_columns_data()
+
+    # search
+    if (n_clicks_disease != None and value_disease != ''):
+
+         columns_genes, data_genes, nb_genes_for_a_disease  = getResults("../server/results/search_results/get_GENES_for_disease.txt","GENES")
+
+         columns_tested_drugs, data_tested_drugs, nb_tested_drugs_for_a_disease = getResults("../server/results/search_results/get_tested_DRUGS_for_disease.txt","Tested Drugs")
+
+         columns_used_drugs, data_used_drugs, nb_used_drugs_for_a_disease = getResults("../server/results/search_results/getDRUGS_for_disease.txt","Used Drugs")
+
+         file = "../server/results/diseases/BRAIN_ISCHEMIA/predictions.txt"
+         column_recom_drug_for_disease, data_recom_drug_for_disease = getResultsFromDF(file, "Drug")
+
+
+
+
+    return columns_used_drugs, data_used_drugs, nb_used_drugs_for_a_disease,\
+           columns_genes, data_genes, nb_genes_for_a_disease,\
+           columns_tested_drugs, data_tested_drugs, nb_tested_drugs_for_a_disease,\
+           column_recom_drug_for_disease, data_recom_drug_for_disease
+
+
+@app.callback(
+    [
+
+        Output("tableStat_drugs_for_gene", "columns"),
+        Output("tableStat_drugs_for_gene", "data"),
+        Output("nb_drugs_for_a_gene", "children"),
+
+        Output("tableStat_disease_for_gene", "columns"),
+        Output("tableStat_disease_for_gene", "data"),
+        Output("nb_disease_for_a_gene", "children"),
+
+
+    ],
+    [
+        Input('button-gene', 'n_clicks')
+    ],
+    [
+        State('input-box-gene', 'value')
+
+    ])
+def query_stat_table_gene(n_clicks_gene, value_gene):
+
+
+    columns_drugs, data_drugs, nb_drugs_for_a_gene = init_columns_data()
+    columns_diseases, data_diseases, nb_diseases_for_a_gene = init_columns_data()
+
+    # search
+    if (n_clicks_gene != None and value_gene != ''):
+
+         columns_drugs, data_drugs, nb_drugs_for_a_gene  = getResults("../server/results/search_results/get_DRUGS_for_GENE.txt","Drugs")
+
+         columns_diseases, data_diseases, nb_diseases_for_a_gene = getResults("../server/results/search_results/get_DISEASES_for_GENE.txt","Diseases")
+
+
+
+
+
+
+    return columns_drugs, data_drugs, nb_drugs_for_a_gene,\
+           columns_diseases, data_diseases, nb_diseases_for_a_gene
+
+
+@app.callback(
+    [
+
+        Output("tableStat_drugs_for_prescriber", "columns"),
+        Output("tableStat_drugs_for_prescriber", "data"),
+        Output("nb_drugs_for_a_prescriber", "children"),
+
+
+
+    ],
+    [
+        Input('button-prescriber', 'n_clicks')
+    ],
+    [
+        State('input-box-prescriber', 'value')
+
+    ])
+def query_stat_table_gene(n_clicks_prescriber, value_prescriber):
+
+
+    columns_drugs, data_drugs, nb_drugs_for_a_prescriber = init_columns_data()
+
+
+    # search
+    if (n_clicks_prescriber != None and value_prescriber != ''):
+
+         columns_drugs, data_drugs, nb_drugs_for_a_prescriber  = getResults("../server/results/search_results/getDRUGS_for_PRESCRIBER.txt","Drugs")
+
+
+
+
+    return columns_drugs, data_drugs, nb_drugs_for_a_prescriber
+
+
+
+
+
+
+##################################### Analytics section ####################
+
+
+
+
+
 
 
 @app.callback(
@@ -650,7 +998,14 @@ def analytic_section(n_clicks_drug, value_RadioItems_drug_section):
             columns_clustering_drugs, data_clustering_drugs = getClustering_results("drug","Drug", "prescriber")
 
 
-    return 1, 1 , 1 , 1, 1, columns_clustering_drugs, data_clustering_drugs
+
+    return dict_metrics['getDRUGS_size'],\
+           dict_metrics['getDRUGS_PESCRIBERS_size'],\
+           dict_metrics['getDRUGS_DISEASES_size'],\
+           dict_metrics['getDRUGS_GENES_size'],\
+           dict_metrics['getDRUGS_TestedDISEASES_size'],\
+           columns_clustering_drugs,\
+           data_clustering_drugs
 
 @app.callback(
     [
@@ -669,7 +1024,9 @@ def analytic_section_prescriber(n_clicks_prescriber):
     if (n_clicks_prescriber != None):
         columns_clustering_prescriber, data_clustering_prescriber = getClustering_results("prescriber", "Prescriber", "drug")
 
-    return 1, columns_clustering_prescriber, data_clustering_prescriber
+
+
+    return dict_metrics['getPRESCRIBER_size'], columns_clustering_prescriber, data_clustering_prescriber
 
 
 @app.callback(
@@ -698,7 +1055,14 @@ def analytic_section_gene(n_clicks_gene, value_RadioItems_gene_section):
         if (value_RadioItems_gene_section == "disease"):
             columns_clustering_gene, data_clustering_gene = getClustering_results("gene", "Gene", "disease")
 
-    return 1, 1, 1, columns_clustering_gene, data_clustering_gene
+
+
+
+    return dict_metrics['getGENES_size'],\
+           dict_metrics['getDRUGS_GENES_size'],\
+           dict_metrics['getGENES_DISEASES_size'],\
+           columns_clustering_gene,\
+           data_clustering_gene
 
 
 
@@ -729,7 +1093,11 @@ def analytic_section_disease(n_clicks_disease, value_RadioItems_disease_section)
         if (value_RadioItems_disease_section == "gene"):
             columns_clustering_disease, data_clustering_disease = getClustering_results("disease", "Disease", "gene")
 
-    return 1, 1, 1, columns_clustering_disease, data_clustering_disease
+    return dict_metrics['getDISEASES_size'],\
+           dict_metrics['getDRUGS_DISEASES_size'],\
+           dict_metrics['getGENES_DISEASES_size'],\
+           columns_clustering_disease,\
+           data_clustering_disease
 
 
 
@@ -750,8 +1118,28 @@ def analytic_section_disease(n_clicks_disease, value_RadioItems_disease_section)
 # clusters table: class_name, instance_count, diseases| drugs|Gene un autre table: disease & gene
 
 
+dict_metrics = {}
+def read_computed_metrics(filename):
+    with open(filename) as f:
+        lines = f.readlines()
+        for line in lines:
+            metric = line.split(" ")
+            dict_metrics[metric[0]] = metric[1]
 
+    return dict_metrics
+
+
+def results_from_json2(json_results):
+    list_of_nodes = []
+    size_object = json.loads(json_results)
+    results = size_object['results'][0]
+    for v in results['VertexSet_2']:
+        list_of_nodes.append(v['v_id'])
+    return list_of_nodes
 
 # Run the server
 if __name__ == "__main__":
-    app.run_server(debug=False)
+    read_computed_metrics("../server/results/metrics.txt")
+
+
+    app.run_server(debug=True)

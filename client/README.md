@@ -1,8 +1,8 @@
-# dash-clinical-analytics
+# Client app of Drug and Disease Mining and Prediction (DDMP)
 
 ## About this app
 
-This dashboard allows you to explore clinic patient volume by time of the day, waiting time and care score. Drill down into high-volume days to view how the busy environment may have affected patient experience.
+This dashboard allows you to explore ...
 
 ## Requirements
 
@@ -13,27 +13,37 @@ This dashboard allows you to explore clinic patient volume by time of the day, w
 We suggest you to create a virtual environment for running this app with Python 3. Clone this repository 
 and open your terminal/command prompt in the root folder.
 
-```
-git clone https://github.com/plotly/dash-sample-apps
-cd dash-sample-apps/apps/dash-clinical-analytics
-python3 -m virtualenv venv
 
-```
 In Unix system:
 ```
-source venv/bin/activate
+python3 -m venv ~/.virtualenvs/ddmp
+source ~/.virtualenvs/ddmp/bin/activate
 
-```
-In Windows: 
+git clone https://github.com/sofi007/tigergraph_challenge/
+cd tigergraph_challenge
 
-```
-venv\Scripts\activate
+pip3 install --upgrade pip
+pip3 install -r requirements.txt
+
 ```
 
 Install all required packages by running:
 ```
-pip install -r requirements.txt
+pip install -r Client/requirements.txt
 ```
+
+
+
+Open Client/app.py and the TigerGraph creadentials:
+```
+conn = tg.TigerGraphConnection(host="put_your_address",
+                               graphname="graph_drug_disease",
+                               username="tigergraph",
+                               password="tigergraph",
+                               apiToken="put_your_apiToken")
+```
+
+
 
 Run this app locally with:
 ```
@@ -47,4 +57,4 @@ python app.py
 ## Resources
 
 * [Dash](https://dash.plot.ly/)
-* Inspired by [Tableau template](https://www.tableau.com/solutions/workbook/improve-patient-satisfaction-improving-cycle-time).
+

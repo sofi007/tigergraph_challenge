@@ -1,0 +1,38 @@
+CREATE QUERY getPRESCRIBER_for_drug(String drug) FOR GRAPH graph_drug_disease API("v2") SYNTAX v2 {
+FILE file1 ("/home/tigergraph/getPRESCRIBER_for_drug.txt");
+  SetAccum<string> @@VertexSet_1_idList;
+  SetAccum<vertex> @@VertexSet_1_vertexList;
+  SetAccum<vertex<DRUG>> @@FinalVertexSet_1;
+  SetAccum<vertex<PRESCRIBER>> @@FinalVertexSet_2;
+
+  @@VertexSet_1_idList += drug;
+  @@VertexSet_1_vertexList = to_vertex_set(@@VertexSet_1_idList, "DRUG");
+  VertexSet_1 (DRUG) = { @@VertexSet_1_vertexList };
+  VertexSet_1 = 
+        SELECT alias_schema_1
+        FROM PRESCRIBER:alias_schema_2 -(prescript_drug:alias_schema_3)- VertexSet_1:alias_schema_1
+        POST-ACCUM @@FinalVertexSet_1 += alias_schema_1
+        POST-ACCUM @@FinalVertexSet_2 += alias_schema_2
+        ;
+
+  VertexSet_1 = { @@FinalVertexSet_1 };
+  #PRINT VertexSet_1["" as no_attributes];
+
+  VertexSet_2 = { @@FinalVertexSet_2 };
+  #PRINT VertexSet_2[
+  #  VertexSet_2.Prscrbr_Last_Org_Name AS Prscrbr_Last_Org_Name,
+  #  VertexSet_2.Prscrbr_First_Name AS Prscrbr_First_Name,
+  #  VertexSet_2.Prscrbr_MI AS Prscrbr_MI,
+  #  VertexSet_2.Prscrbr_Crdntls AS Prscrbr_Crdntls,
+  #  VertexSet_2.Prscrbr_Gndr AS Prscrbr_Gndr,
+  #  VertexSet_2.Prscrbr_City AS Prscrbr_City,
+  #  VertexSet_2.Prscrbr_State_Abrvtn AS Prscrbr_State_Abrvtn,
+  #  VertexSet_2.Prscrbr_State_FIPS AS Prscrbr_State_FIPS,
+  #  VertexSet_2.Prscrbr_zip5 AS Prscrbr_zip5
+  #];
+  #PRINT VertexSet_2.Prscrbr_NPI TO_CSV file1;
+  PRINT VertexSet_2["" as no_attributes];
+
+
+
+}

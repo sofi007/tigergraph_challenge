@@ -1,0 +1,11 @@
+CREATE QUERY getNB_GENES() FOR GRAPH graph_drug_disease API("v2") {
+
+  VertexSet_1 = 
+        SELECT alias_schema_1
+        FROM GENE:alias_schema_1
+        ;
+
+PRINT VertexSet_1.size() as size;
+
+
+}

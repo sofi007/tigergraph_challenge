@@ -1,0 +1,35 @@
+CREATE QUERY pattern_for_disease(String disease) FOR GRAPH graph_drug_disease API("v2") SYNTAX v2 {
+
+  SetAccum<string> @@VertexSet_2_idList;
+  SetAccum<vertex> @@VertexSet_2_vertexList;
+  SetAccum<edge> @@FinalEdgeSet_3;
+  SetAccum<edge> @@FinalEdgeSet_4;
+  SetAccum<vertex<DRUG>> @@FinalVertexSet_1;
+  SetAccum<vertex<DISEASES>> @@FinalVertexSet_2;
+
+  @@VertexSet_2_idList += disease;
+  @@VertexSet_2_vertexList = to_vertex_set(@@VertexSet_2_idList, "DISEASES");
+  VertexSet_2 (DISEASES) = { @@VertexSet_2_vertexList };
+  VertexSet_1 = 
+        SELECT alias_schema_1
+        FROM DRUG:alias_schema_1 -(drug_is_tested_for:alias_schema_3)- VertexSet_2:alias_schema_2,
+             DRUG:alias_schema_1 -(is_prescripted_for:alias_schema_4)- VertexSet_2:alias_schema_2
+        ACCUM @@FinalEdgeSet_3 += alias_schema_3,
+              @@FinalEdgeSet_4 += alias_schema_4
+        POST-ACCUM @@FinalVertexSet_1 += alias_schema_1
+        POST-ACCUM @@FinalVertexSet_2 += alias_schema_2
+        ;
+
+  PRINT @@FinalEdgeSet_3;
+
+  PRINT @@FinalEdgeSet_4;
+
+  VertexSet_1 = { @@FinalVertexSet_1 };
+  PRINT VertexSet_1["" as no_attributes];
+
+  VertexSet_2 = { @@FinalVertexSet_2 };
+  PRINT VertexSet_2["" as no_attributes];
+
+}
+
+
