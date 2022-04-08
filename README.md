@@ -26,8 +26,6 @@ DDMP is a client-server database app.
     * [Prescribers](https://data.cms.gov/provider-summary-by-type-of-service/medicare-part-d-prescribers/medicare-part-d-prescribers-by-provider), contains information on prescription drugs prescribed by individual physicians and other health care providers. ta range: from 2013 to 2019.
     * [Prescription Drug](https://data.cms.gov/provider-summary-by-type-of-service/medicare-part-d-prescribers/medicare-part-d-prescribers-by-provider-and-drug), provides information on prescription drugs prescribed to Medicare beneficiaries. Data range: from 2013 to 2019.
     
-charatristcs
-link 2
 
 
 
@@ -35,7 +33,7 @@ link 2
 
 ## Graph database schema
 
-Design schema and the map of the data to graph is performed in python code in server part.
+The design schema and the map of the data to the graph database is performed in python code.
 
 Graph schema: The graph schema is composed of the following principal nodes: 
 * *PRESCRIBER* the node represents the prescriber and has the following parameters: NPI, Last Name, First Name,Prscrbr_MI ,Prscrbr_Crdntls, Gender, City, State, Zipcode
