@@ -4,5 +4,4 @@ gunicorn
 numpy
 pandas
 datetime
-pathlib
 pyTigerGraph
