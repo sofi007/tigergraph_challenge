@@ -68,7 +68,7 @@ DDMP is a client-server database app.
     * **Dash** is a python framework created by **plotly** for creating interactive web applications.
 
 
-![Schama](./images/ddmp_architecture.png)
+![Schama](./images/tigergraph_architecture.png)
 
 ### Programming languages used.
 * Python3
