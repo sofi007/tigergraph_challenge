@@ -77,11 +77,7 @@ DDMP is a client-server database app.
 ![Demo](./images/gif_demo.gif)
 
 
-The following figure shows a reduced graph schema composed of the principal nodes and their links: PRESCRIBER, DRUG, DISEASE, GENE.
-
-![Schama](./images/schema2.png)
-
-The following figure shows a reduced graph schema composed of the whole nodes and their links.
+The following figure shows the whole graph schema composed of the whole nodes and their links.
 
 ![schama-global](./images/schama-global2.png)
 
@@ -154,6 +150,7 @@ Test the application by searching the following drugs, diseases, gene, and docto
 * Connect the Client app with the graph database on a dedicated deployment server.
 * Create indexes in the graph database to reduce the search time. 
 * Create an app for automatically running the prediction and clustering algorithms.
+* Include other nodes related to clinical trials in the prediction and clustering algorithms such as biological nodes, devices nodes, genetic nodes,...etc.
 
 
 # Reflections
