@@ -51,6 +51,7 @@ Describe how your submission is relevant to the problem statement
 ### Technology description
 
 DDMP is a client-server database app. 
+#### Server
   * The server is based on _tigergraph_ database: the different sources of data are processed and mapped to a graph database.
     * The graph database schema is automatically developed from a **python** code using **pyTigerGraph**.
     * This app is composed of a set of modules:
@@ -61,7 +62,9 @@ DDMP is a client-server database app.
       * Graph Data science module for 
         * finding clusters of prescribers, drugs, diseases, and gene. The clustering algorithms uses random walks,  node2vec, KNN algorithms: codes/clustering.ipynb
         * Predicting drugs for a specific disease or diseases for a specific drug using the common neighbors algorithm: Predictions.ipynb.
-      
+
+
+#### Client       
   * The client is used by the user to interact with the server database mainly through a user interface whereas in a web application. 
     * The user interaction is through a web browser using a **laptop** or **smartphone**. 
     * The client is developed in **python** using **dash**. 
