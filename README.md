@@ -18,7 +18,9 @@ Describe how your submission is relevant to the problem statement
 
 ### Demo link: https://ddmp-tigergraph.herokuapp.com
 
-### Video demo link: https://youtu.be/lLi82otLFlM
+### Video demo link: 
+ * Short version (< 3minutes): https://youtu.be/lLi82otLFlM
+ * Long version (7 minutes): https://youtu.be/sR27uX2hH9c
 
 ### How the entry was the most
 #### Impactful in solving a real world problem
