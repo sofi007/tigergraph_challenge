@@ -162,15 +162,31 @@ Test the application by searching the following drugs, diseases, gene, and docto
 
 Review the steps you took to create this project and the resources you were provided. Feel free to indiciate room for improvement and general reflections.
 
+The project is build based on the availabilities of the data, and how can I create relationships between them into a graph database, and how can I visualize the results such as every user can easily use it. First: the data was collected and processed from different heterogeneous sources. The processing step consists in cleaning the data by removing special characters, performing a data harmonization from different sources and provide a comparable view of data from different studies. In parallel, I read different research and business papers and reports in order to have a good idea about the expectations. Second, the graph schema and data mapping are automatically performed in the python code using the tigergraph api. Third, 30 GSQL queries were created and installed in the graph database. Finally, a dashboard was developed using the framework dash-plotly. The dashboard is a web-app containing a search engine, analytical results, and a recommendation system. The web-app can be used in a laptop or a mobile. 
+Different improvements could be done in the following domains: 
+* Research and Development: More research in NLP (Natural Language Processing) could be done for processing textual data related to drug, diseases. Another direction is to include and combine biological data with textual data and knowledge experts.  
+* Business: by including professional persons in order to study and investigate the market and providing a business view.
+
+
 # References
 Here are the list of inspired resources:
 * Research papers:
-  * Hakime Öztürk, Arzucan Özgür, Philippe Schwaller, Teodoro Laino, Elif Ozkirimli,
-  Exploring chemical space using natural language processing methodologies for drug discovery,
-  Drug Discovery Today, Volume 25, Issue 4, 2020, Pages 689-705,   ISSN 1359-6446,
-  https://doi.org/10.1016/j.drudis.2020.01.020.  (https://www.sciencedirect.com/science/article/pii/S1359644620300465)
+  * Hakime Öztürk, Arzucan Özgür, Philippe Schwaller, Teodoro Laino, Elif Ozkirimli, Exploring chemical space using natural language processing methodologies for drug discovery, Drug Discovery Today, Volume 25, Issue 4, 2020, Pages 689-705,   ISSN 1359-6446, https://doi.org/10.1016/j.drudis.2020.01.020
+  * Kong HJ. Managing Unstructured Big Data in Healthcare System. Healthc Inform Res. 2019;25(1):1-2. doi:10.4258/hir.2019.25.1.1
   * José Jiménez-Luna, Francesca Grisoni, Nils Weskamp & Gisbert Schneider (2021) Artificial intelligence in drug discovery: recent advances and future perspectives, Expert Opinion on Drug Discovery, 16:9, 949-959, DOI: 10.1080/17460441.2021.1909567
   * Gershell, L., Atkins, J. A brief history of novel drug discovery technologies. Nat Rev Drug Discov 2, 321–327 (2003). https://doi.org/10.1038/nrd1064
+
+* Bussiness papers/reports:
+ * Mullard, A. New drugs cost US$2.6 billion to develop. Nature Reviews Drug Discovery (2014).
+ * Fleming, Nic. How artificial intelligence is changing drug discovery. Nature (2018).
+ * Smalley, E. AI-powered drug discovery captures pharma interest. Nature Biotechnology (2017).
+ * M. Hutson, Artificial intelligence faces reproducibility crisis, Science 359 (6377) (2018) 725–726.
+ * Nigel Crisp, M.A., and Lincoln Chen, M.D. Global Supply of Health Professionals. New England Journal of Medicine. 2014.
+ * Physician-Scientist Workforce (PSW) Report 2014. NIH. https://report.nih.gov/workforce/psw/med_degree.aspx
+ * Pharmaceutical Manufacturing Market Size, Share & Trends Analysis Report By Molecule Type, By Drug Development Type, By Formulation, By Routes of Administration, By Sales Channel, By Age Group, And Segment Forecasts, 2021 – 2028. https://www.grandviewresearch.com/industry-analysis/pharmaceutical-manufacturing-market
+ * https://www.statista.com/statistics/309466/global-r-and-d-expenditure-for-pharmaceuticals/
+
+ 
   
 
 
