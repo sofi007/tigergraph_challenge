@@ -196,8 +196,10 @@ Test the application by searching the following drugs, diseases, gene, and docto
 
 # Known Issues and Future Improvements
 ##  Known limitations within the project
-* For the current version, due to the deployment constraints on heroku for testing the demo and testing, there is no connection between the client app (dashboard) and the graph database server for searching queries. In addition, searching patterns in a large graph in a sigle machine takes several seconds which is not good in the production level when the user navigates in the Client app (see the improvement in the next steps section).
-* The queries are manually run using GSQL queries (server/codes folder).
+* I used tigergraph on-premise because I have a high memory size (62 GB) and a large number of CPUs (32) compared to the tigergraph cloud with 8 GB and 4 CPUs. Thus, running graph machine learning algorithms such as random walk, and node2vec consume a large memory and disk usages making the purpose of the project impossible in tigergraph cloud.
+* For the current version, due to the deployment constraints for testing the demo and testing due the use of tigergraph on-premise instead of tigergraph cloud, there is no connection between the client app (dashboard) and the graph database server for searching queries. 
+* The graph database is big. Searching patterns in a large graph in a sigle machine takes several seconds which is not good in the production level when the user navigates in the Client app (see the improvement in the next steps section).
+* The queries are manually run using GSQL queries (server/codes folder) and the results are put in the client side.
 * In addiction, the prediction of drugs/diseases as well as the clustering of doctors/drugs/diseases/genes are also running on server side and the results are used the client app. The prediction and clustering take a long time. This is the reason to run prediction and clustering algorithms offline.
 
 ## Next steps
