@@ -1,0 +1,13 @@
+CREATE QUERY getDRUGS2(String filename) FOR GRAPH graph_drug_disease API("v2") {
+FILE file1 (filename);
+
+  VertexSet_1 = 
+        SELECT alias_schema_1
+        FROM DRUG:alias_schema_1
+        ;
+
+PRINT VertexSet_1.name TO_CSV file1;
+
+
+
+}

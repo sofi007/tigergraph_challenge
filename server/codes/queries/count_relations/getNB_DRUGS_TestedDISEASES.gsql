@@ -1,0 +1,13 @@
+CREATE QUERY getNB_DRUGS_TestedDISEASES() FOR GRAPH graph_drug_disease API("v2") SYNTAX v2 {
+
+  SetAccum<edge> @@EdgeSet_3;
+
+  VertexSet_1 = 
+        SELECT alias_schema_1
+        FROM DISEASES:alias_schema_2 -(drug_is_tested_for:alias_schema_3)- DRUG:alias_schema_1
+        ACCUM @@EdgeSet_3 += alias_schema_3
+        ;
+
+  PRINT @@EdgeSet_3.size() as nb_relations;
+}
+
