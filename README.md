@@ -24,15 +24,64 @@ Describe how your submission is relevant to the problem statement
 
 ### How the entry was the most
 #### Impactful in solving a real world problem
+According to an of-cited Tufts Center for the Study of Drug Development (CSDD) study, the average cost to develop a new drug is roughly $2.6 billion. Additionally, 90% of new drugs fail to win approval. For those few that do manage to win approval, it still takes at least 10 years to get them to market [1].
+My solution helps the doctors and researchers. 9.2 million doctors worldwide in 2010 [2]. As of 2018, there were over 985,000 practicing physicians in the United States. 14,000 physician-scientists in the United States [3].
+* Economic benefits:
+     * Reduce the cost of research and development of new drugs
+     * Reduce the new drugs approval failure and the time-to-market
+* Social benefits:
+     * Creating connections between doctors prescribing the same drug. It allows to create a collaborative practice between doctors and pharmacists which has a positive effect on healthcare outcomes. According to [4], 98% of doctors and pharmacists agreed that doctor-pharmacist collaboration improves patient outcomes, more than half of the physicians (52.1%) and pharmacists (55.7%) had never practiced collaboratively.
+    * Helping researchers by identifying doctors prescribing a drug. 
+
+[1] Mullard, A. New drugs cost US$2.6 billion to develop. Nature Reviews Drug Discovery (2014).
+[2] Nigel Crisp, M.A., and Lincoln Chen, M.D. Global Supply of Health Professionals. New England Journal of Medicine. 2014.
+[3] Physician-Scientist Workforce (PSW) Report 2014. NIH. 
+[4] Albassam A, et al.. Perspectives of primary care physicians and pharmacists on interprofessional collaboration in Kuwait: A quantitative study. PLoS One. 2020;15(7)
 
 
 #### Innovative use case of graph
+The project offers a novel use of graph as a search engine and a recommendation system for prescribers (doctors), drugs, diseases, genes, and clinical trials.
+Healthcare data are naturally high-dimensional and sparse because most medical concepts are not applicable to most individuals. For example, any individual doctor prescribes a small subset of drugs. My project seeks to provide effective representations between prescribes, drugs, diseases, and genes, as well as clinical trials by producing useful clusters of high-dimensional sparse data. 
+Healthcare data are large and unstructured data. In fact, the big problem of healthcare fields is that about 80% of medical data remains unstructured. Unstructured data is an information that is not arranged according to a pre-set data model or schema. It faces complex data storage and management issues.
+In the existing research works, not all the prescribers, drugs, diseases, genes, and clinical trials data are jointly used in the same database.
+For all these reasons, the use of a graph database:
+* offers an agile and flexible structures, 
+* represents relationships of Healthcare data in one homogeneous database.
+* highlights relationships between prescribers and drugs, drugs and diseases, drugs and genes, diseases and genes as well as the integration of clinical trials.
+* Queries output real-time results
 
+
+[1] Kong HJ. Managing Unstructured Big Data in Healthcare System. Healthc Inform Res. 2019;25(1):1-2. doi:10.4258/hir.2019.25.1.1
 
 #### Ambitious and complex graph
+The graph-based solution allows to:
+*	Reduce the size of the initial heterogeneous data (initially 20,3 GB) by creating connections (relationships), it reduces the redundant data in the database.
+*	Manage a big data infrastructure.
+*	develop patterns for finding new drugs or recommend to test drug in another disease. This kind of complex patterns cannot be developed in a classical database.
 
+Graph database schema:
+The design schema and the map of the data to the graph database is performed in python code.
+The graph schema is composed of the following principal nodes: PRESCRIBER, DRUG, DISEASE, GENE, BEHAVIORAL, BIOLOGICAL, COMBINATION_PRODUCT, DEVICE, DIAGNOSTIC_TEST, DIETARY_SUPPLEMENT, GENETIC, OTHER, PROCEDURE, RADIATION. 
+The graph is composed of the following principal links between the nodes:
+*	prescript_drug: a link between prescriber and drug nodes. A link is created when a prescriber prescribe a drug.
+*	is_prescripted_for: a link between a drug and disease. A link is created from a list of drugs used for diseases.
+*	drug_is_tested_for: a link between a drug and tested disease in the clinical trials. A link is created from a list of drugs used for diseases in the clinical trials.
+*	gene_disease_association: a link between a gene and disease. A link is created from a list of genes associated to diseases.
+*	drug_gene_association: a link between a gene and disease. A link is created from a list of genes associated to drugs.
+
+
+The graph schema size
+*	Vertex count: 2,288,301, Edge count: 153,259,948
+
+30 GSQL queries has been developed. 
+The solution can work on a laptop or a mobile application.
 
 #### Applicable graph solution
+The current version is considered as a Proof of Concept (POC) version but ready enough to try it on a real-world case. Other visualization-related performance enhancements can be made in order to easily deploy it at the production-level. 
+My solution could be adopted by the pharmaceutical industry. In fact, the global pharmaceutical manufacturing market size was estimated at USD 405.52 billion in 2020 [1]. Especially, the research and development of the pharmaceutical industry. In 2020, research and development spending in the pharmaceutical industry totaled nearly 200 billion U.S. dollars globally. For comparison, R&D expenditures totaled 137 billion dollars in 2012 [2].
+
+[1] Pharmaceutical Manufacturing Market Size, Share & Trends Analysis Report By Molecule Type, By Drug Development Type, By Formulation, By Routes of Administration, By Sales Channel, By Age Group, And Segment Forecasts, 2021 – 2028. https://www.grandviewresearch.com/industry-analysis/pharmaceutical-manufacturing-market
+[2] https://www.statista.com/statistics/309466/global-r-and-d-expenditure-for-pharmaceuticals/
 
 ## Data : 
 * Source 1: [ctdbase](http://ctdbase.org/), Comparative Toxicogenomics Database. CTD is a robust, publicly available database that aims to advance understanding about how environmental exposures affect human health. It provides manually curated information about chemical–gene/protein interactions, chemical–disease and gene–disease relationships. These data are integrated with functional and pathway data to aid in development of hypotheses about the mechanisms underlying environmentally influenced diseases.
