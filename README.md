@@ -96,7 +96,7 @@ My solution could be adopted by the pharmaceutical industry. In fact, the global
     * [Prescribers](https://data.cms.gov/provider-summary-by-type-of-service/medicare-part-d-prescribers/medicare-part-d-prescribers-by-provider), contains information on prescription drugs prescribed by individual physicians and other health care providers. ta range: from 2013 to 2019.
     * [Prescription Drug](https://data.cms.gov/provider-summary-by-type-of-service/medicare-part-d-prescribers/medicare-part-d-prescribers-by-provider-and-drug), provides information on prescription drugs prescribed to Medicare beneficiaries. Data range: from 2013 to 2019.
 
-The data is processed and published in the link due the large size: https://drive.google.com/drive/folders/1RZo1oD2CBOKVJYPIHMFtIUvd7vXzxvhN?usp=sharing
+* **All the data is processed and published in the link due the large size**: https://drive.google.com/drive/folders/1RZo1oD2CBOKVJYPIHMFtIUvd7vXzxvhN?usp=sharing
 
 ## Technology Stack: 
 ### Technology description
