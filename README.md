@@ -167,7 +167,7 @@ I suggest you to create a virtual environment for running this app with Python 3
 and open your terminal/command prompt in the root folder.
 
 
-In Unix system:
+**In Unix system**:
 ```
 python3 -m venv ~/.virtualenvs/ddmp
 source ~/.virtualenvs/ddmp/bin/activate
@@ -196,7 +196,7 @@ Test the application by searching the following drugs, diseases, gene, and docto
 * gene: 1052, 11214, 55137, 200734
 * doctor (prescriber): 1003053950
 
-In Windows system:
+**In Windows system**:
 ```
 # py -m venv /path/to/new/virtual/environment
 py -m venv ddmp
