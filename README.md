@@ -102,7 +102,7 @@ My solution could be adopted by the pharmaceutical industry. In fact, the global
 ### Technology description
 
 DDMP is a client-server database app. 
-#### Server
+#### Server (https://ddmp.i.tgcloud.io)
   * The server is based on _tigergraph_ database: the different sources of data are processed and mapped to a graph database.
     * The graph database schema is automatically developed from a **python** code using **pyTigerGraph**.
     * This app is composed of a set of modules:
