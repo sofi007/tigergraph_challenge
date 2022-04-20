@@ -133,7 +133,7 @@ DDMP is a client-server database app.
 ![Demo](./images/gif_demo.gif)
 
 
-The following figure shows the whole graph schema composed of the whole nodes and their links.
+The following figure shows the whole graph schema composed of the whole nodes and their links (https://ddmp.i.tgcloud.io). 
 
 ![schama-global](./images/schama-global2.png)
 
