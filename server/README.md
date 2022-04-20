@@ -25,11 +25,23 @@ pip install notebook
 ```
 Just run 'jupyter notebook' command in the command prompt or Powershell and the jupyter environment will open up. Click on the kernel and click change kernel you will be able to see the kernel you just created.
 
-In Graph database and Graph queries modules
-you have to use your credentials for instantiate a connection to the graph database:
+In Graph database and Graph queries modules you have to use your credentials for instantiate a connection to the graph database:
+### On-premise
 ```
 import pyTigerGraph as tg
 
 conn = tg.TigerGraphConnection(host="http://127.0.0.1",graphname="graph_drug_disease", username="tigergraph", password="tigergraph",  apiToken="<PUT_YOUR_TOKEN_PROVIDED_BY_Tigergraph>")
 
 ```
+
+### Cloud
+Otherwise you can use the tgCloud: 
+```
+https://ddmp.i.tgcloud.io
+```
+```
+conn = tg.TigerGraphConnection(host="https://ddmp.i.tgcloud.io", graphname="graph_drug_disease")
+authToken = conn.getToken("982l37jamamujrg5ing9cvh18mt0o9jn", "100000000000000000")
+print(authToken)
+```
+
