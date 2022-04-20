@@ -3,13 +3,13 @@
 ## About this app
 
 This app is composed of a set of modules:
-* Data processing module used for processing and cleaning the input data: codes/processing_precsciptor_drug.ipynb
-* Graph database module used for creating the graph database using pyTigerGraph, a Python package for connecting to TigerGraph databases (https://github.com/pyTigerGraph/pyTigerGraph): codes/Tg_graph_database_creation.ipynb
-* Graph queries module used for installing a set of GSQL queries including: simple queries for searching patterns: codes/install_search_patterns.ipynb
-  * Install a set of GSQL queries from codes/queries folder: containing 30 queries.
+* Data processing module used for processing and cleaning the input data: **codes/processing_precsciptor_drug.ipynb**
+* Graph database module used for creating the graph database using pyTigerGraph, a Python package for connecting to TigerGraph databases (https://github.com/pyTigerGraph/pyTigerGraph): **codes/Tg_graph_database_creation.ipynb**
+* Graph queries module used for installing a set of GSQL queries including: simple queries for searching patterns: **codes/install_search_patterns.ipynb**
+  * Install a set of GSQL queries from **codes/queries** folder: containing 30 queries.
 * Graph Data science module for 
-  * finding clusters of prescribers, drugs, diseases, and gene. The clustering algorithms uses random walks,  node2vec, KNN algorithms: codes/clustering.ipynb
-  * Predicting drugs for a specific disease or diseases for a specific drug using the common neighbors algorithm: Predictions.ipynb.
+  * finding clusters of prescribers, drugs, diseases, and gene. The clustering algorithms uses *random walks*,  *node2vec*, *KNN* algorithms: **codes/clustering.ipynb**
+  * Predicting drugs for a specific disease or diseases for a specific drug using the *common neighbors* algorithm: **codes/Predictions.ipynb**.
 
 ## Requirements
 
