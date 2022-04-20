@@ -196,6 +196,35 @@ Test the application by searching the following drugs, diseases, gene, and docto
 * gene: 1052, 11214, 55137, 200734
 * doctor (prescriber): 1003053950
 
+In Windows system:
+```
+# py -m venv /path/to/new/virtual/environment
+py -m venv ddmp
+Script\activate
+```
+Clone the repository 
+```
+git clone https://github.com/sofi007/tigergraph_challenge/
+```
+
+Install dependencies
+```
+cd tigergraph_challenge
+pip3 install --upgrade pip
+pip3 install -r requirements.txt
+
+```
+
+Run the application
+```
+py ./app.py
+```
+Test the application by searching the following drugs, diseases, gene, and doctor:
+* drug: CYTOFLAVIN, LIDOCAINE, TRAZODONE, VITAMIN_A
+* disease: BRAIN_ISCHEMIA, COVID-19, CROHN_DISEASE
+* gene: 1052, 11214, 55137, 200734
+* doctor (prescriber): 1003053950
+
 # Known Issues and Future Improvements
 ##  Known limitations within the project
 * I used tigergraph on-premise because I have a high memory size (62 GB) and a large number of CPUs (32) compared to the tigergraph cloud with 8 GB and 4 CPUs. Thus, running graph machine learning algorithms such as random walk, and node2vec consume a large memory and disk usages making the purpose of the project impossible in tigergraph cloud.
