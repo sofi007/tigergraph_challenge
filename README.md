@@ -191,8 +191,8 @@ python3 ./app.py
 ```
 
 Test the application by searching the following drugs, diseases, gene, and doctor:
-* drug: CYTOFLAVIN, LIDOCAINE, TRAZODONE, VITAMIN_A
-* disease: BRAIN_ISCHEMIA, COVID-19, CROHN_DISEASE
+* drug: TRAZODONE, VITAMIN_A, LIDOCAINE, CYTOFLAVIN
+* disease: COVID-19, BRAIN_ISCHEMIA, CROHN_DISEASE
 * gene: 1052, 11214, 55137, 200734
 * doctor (prescriber): 1003053950
 
@@ -220,8 +220,8 @@ Run the application
 py ./app.py
 ```
 Test the application by searching the following drugs, diseases, gene, and doctor:
-* drug: CYTOFLAVIN, LIDOCAINE, TRAZODONE, VITAMIN_A
-* disease: BRAIN_ISCHEMIA, COVID-19, CROHN_DISEASE
+* drug: TRAZODONE, VITAMIN_A, LIDOCAINE, CYTOFLAVIN
+* disease: COVID-19, BRAIN_ISCHEMIA, CROHN_DISEASE
 * gene: 1052, 11214, 55137, 200734
 * doctor (prescriber): 1003053950
 
