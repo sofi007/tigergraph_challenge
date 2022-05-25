@@ -233,21 +233,6 @@ Test the application by searching the following drugs, diseases, gene, and docto
 * The queries are manually run using GSQL queries (server/codes folder) and the results are put in the client side.
 * In addiction, the prediction of drugs/diseases as well as the clustering of doctors/drugs/diseases/genes are also running on server side and the results are used the client app. The prediction and clustering take a long time. This is the reason to run prediction and clustering algorithms offline.
 
-## Next steps
-* Connect the Client app with the graph database on a dedicated deployment server.
-* Create indexes in the graph database to reduce the search time. 
-* Create an app for automatically running the prediction and clustering algorithms.
-* Include other nodes related to clinical trials in the prediction and clustering algorithms such as biological nodes, devices nodes, genetic nodes,...etc.
-
-
-# Reflections
-
-Review the steps you took to create this project and the resources you were provided. Feel free to indiciate room for improvement and general reflections.
-
-The project is build based on the availabilities of the data, and how can I create relationships between them into a graph database, and how can I visualize the results such as every user can easily use it. First: the data was collected and processed from different heterogeneous sources. The processing step consists in cleaning the data by removing special characters, performing a data harmonization from different sources and provide a comparable view of data from different studies. In parallel, I read different research and business papers and reports in order to have a good idea about the expectations. Second, the graph schema and data mapping are automatically performed in the python code using the tigergraph api. Third, 30 GSQL queries were created and installed in the graph database. Finally, a dashboard was developed using the framework dash-plotly. The dashboard is a web-app containing a search engine, analytical results, and a recommendation system. The web-app can be used in a laptop or a mobile. 
-Different improvements could be done in the following domains: 
-* Research and Development: More research in NLP (Natural Language Processing) could be done for processing textual data related to drug, diseases. Another direction is to include and combine biological data with textual data and knowledge experts.  
-* Business: by including professional persons in order to study and investigate the market and providing a business view.
 
 
 # References
